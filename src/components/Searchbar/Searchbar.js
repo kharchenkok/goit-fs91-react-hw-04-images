@@ -1,45 +1,42 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { BsSearch } from 'react-icons/bs';
 import styles from './Searchbar.module.css';
-export default class Searchbar extends Component {
-  state = {
-    query: '',
+const Searchbar = ({ onSubmit }) => {
+  const [query, setQuery] = useState('');
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    onSubmit(query);
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.onSubmit(this.state.query);
-    // this.setState({ query: '' });
+  const handleChange = event => {
+    setQuery(event.target.value.trim());
   };
 
-  handleChange = e => {
-    this.setState({ query: e.target.value.trim() });
-  };
-  render() {
-    const { query } = this.state;
-    return (
-      <header className={styles.Searchbar} onSubmit={this.handleSubmit}>
-        <form className={styles.SearchForm}>
-          <input
-            className={styles.SearchFormInput}
-            type="text"
-            name="query"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-            value={query}
-            onChange={this.handleChange}
-          />
-          <button
-            type="submit"
-            disabled={!query}
-            className={styles.SearchFormButton}
-          >
-            <BsSearch />
-            <span className={styles.SearchFormButtonLabel}>Search</span>
-          </button>
-        </form>
-      </header>
-    );
-  }
-}
+  return (
+    <header className={styles.Searchbar} onSubmit={handleSubmit}>
+      <form className={styles.SearchForm}>
+        <input
+          className={styles.SearchFormInput}
+          type="text"
+          name="query"
+          autoComplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+          value={query}
+          onChange={handleChange}
+        />
+        <button
+          type="submit"
+          disabled={!query}
+          className={styles.SearchFormButton}
+        >
+          <BsSearch />
+          <span className={styles.SearchFormButtonLabel}>Search</span>
+        </button>
+      </form>
+    </header>
+  );
+};
+
+export default Searchbar;
